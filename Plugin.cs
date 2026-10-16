@@ -84,8 +84,6 @@ public sealed class Plugin : IDalamudPlugin
                 ignoreSharedHotbars: false,
                 allowSaveToPvP: false);
 
-            var kind = request.Shared ? "共通" : "個人";
-            ChatGui.Print($"[MacroSlot] ホットバー{request.HotbarNumber} スロット{request.SlotNumber}を{kind}マクロ#{request.MacroNumber}に変更しました。");
             Log.Information(
                 "Set hotbar {Hotbar}, slot {Slot} to {Kind} macro {Macro}",
                 request.HotbarNumber,
