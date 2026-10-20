@@ -1,11 +1,10 @@
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Windowing;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace MacroSlot;
 
-public unsafe sealed class MacroAssistWindow : Window
+public sealed class MacroAssistWindow : Window
 {
     private static readonly string[] Commands = ["/action", "/pvpaction", "/generalaction", "/petaction", "/wait", "/micon", "/macroerror", "/target", "/assist", "/focustarget", "/enemysign", "/say", "/party", "/alliance", "/echo", "/gearset", "/hotbar", "/crosshotbar", "/hud", "/readycheck", "/countdown"];
     private static readonly string[] Targets = ["<t>", "<mo>", "<tt>", "<me>", "<f>", "<lt>", "<le>", "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>", "<8>"];
@@ -26,14 +25,7 @@ public unsafe sealed class MacroAssistWindow : Window
     }
 
     public void Open() => IsOpen = true;
-    public void Toggle() => IsOpen = !IsOpen;
-
-    public override void PreDraw()
-    {
-        var addon = (AtkUnitBase*)Plugin.GameGui.GetAddonByName("Macro");
-        if (addon is null || !addon->IsVisible) return;
-        ImGui.SetNextWindowPos(new Vector2(addon->X + addon->Width + 12, addon->Y), ImGuiCond.Always);
-    }
+    public new void Toggle() => IsOpen = !IsOpen;
 
     public override void Draw()
     {
