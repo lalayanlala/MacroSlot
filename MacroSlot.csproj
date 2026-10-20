@@ -1,16 +1,15 @@
 <Project Sdk="Dalamud.NET.Sdk/15.0.0">
   <PropertyGroup>
-    <Version>1.0.1.0</Version>
-    <Author>MacroSlot contributors</Author>
-    <Name>MacroSlot</Name>
+    <Version>1.1.0.0</Version>
+    <Author>Yuta</Author>
+    <Name>Macro Assist</Name>
     <AssemblyName>MacroSlot</AssemblyName>
     <RootNamespace>MacroSlot</RootNamespace>
-    <Punchline>指定したホットバースロットを個人・共通マクロに差し替えます。</Punchline>
-    <Description>/mslot コマンドで、指定した1スロットだけを個人または共通マクロへ安全に差し替える小型プラグインです。</Description>
-    <Tags>hotbar;macro;utility</Tags>
+    <Punchline>マクロを、補完と入力ガイドで素早く作成。</Punchline>
+    <Description>マクロ管理画面に追従する入力補完と、/mslotによる安全なホットバー配置を備えたマクロ作成支援プラグインです。</Description>
+    <Tags>hotbar;macro;utility;japanese</Tags>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 </Project>
-
