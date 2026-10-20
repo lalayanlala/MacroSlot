@@ -16,9 +16,6 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
-      - name: Extract source
-        shell: pwsh
-        run: Expand-Archive MacroSlot_Source_v1.1.0.zip source -Force
       - name: Download Dalamud API 15 references
         shell: pwsh
         run: |
@@ -28,11 +25,11 @@ jobs:
           if ($api -ne 15) { throw "Expected Dalamud API 15 but got API $api." }
       - name: Build
         shell: pwsh
-        run: dotnet build source/MacroSlot.csproj -c Release "-p:DalamudLibPath=$PWD/dalamud/" -p:TreatWarningsAsErrors=true
+        run: dotnet build MacroSlot.csproj -c Release "-p:DalamudLibPath=$PWD/dalamud/" -p:TreatWarningsAsErrors=true
       - name: Prepare release
         shell: pwsh
         run: |
-          $package = Get-ChildItem source/bin -Recurse -Filter latest.zip | Select-Object -First 1
+          $package = Get-ChildItem bin -Recurse -Filter latest.zip | Select-Object -First 1
           if (-not $package) { throw 'latest.zip was not produced.' }
           Copy-Item $package.FullName latest.zip
       - name: Publish release
