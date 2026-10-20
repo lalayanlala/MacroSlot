@@ -41,7 +41,7 @@ public sealed class Plugin : IDalamudPlugin
         CommandManager.RemoveHandler("/massist");
     }
 
-    private void OnCommand(string _, string arguments)
+    private void OnCommand(string commandName, string arguments)
     {
         if (!TryParse(arguments, out var request, out var error)) { ChatGui.PrintError($"[MacroSlot] {error}"); ChatGui.Print(Usage); return; }
         if (!ClientState.IsLoggedIn) { ChatGui.PrintError("[MacroSlot] ログイン後に実行してください。"); return; }
