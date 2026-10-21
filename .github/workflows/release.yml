@@ -1,0 +1,45 @@
+name: Build and release MacroSlot
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Download Dalamud API 15 references
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri https://goatcorp.github.io/dalamud-distrib/stg/latest.zip -OutFile dalamud.zip
+          Expand-Archive dalamud.zip dalamud -Force
+          $api = [System.Reflection.AssemblyName]::GetAssemblyName("$PWD/dalamud/Dalamud.dll").Version.Major
+          if ($api -ne 15) { throw "Expected Dalamud API 15 but got API $api." }
+      - name: Build
+        shell: pwsh
+        run: dotnet build MacroSlot.csproj -c Release "-p:DalamudLibPath=$PWD/dalamud/" -p:TreatWarningsAsErrors=true
+      - name: Prepare release
+        shell: pwsh
+        run: |
+          $package = Get-ChildItem bin -Recurse -Filter latest.zip | Select-Object -First 1
+          if (-not $package) { throw 'latest.zip was not produced.' }
+          Copy-Item $package.FullName latest.zip
+      - name: Publish release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view v1.1.1 *> $null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create v1.1.1 latest.zip --title 'MacroSlot v1.1.1' --notes 'Macro Assist を分離し、/mslot 専用の MacroSlot に復元。'
+          } else {
+            gh release upload v1.1.1 latest.zip --clobber
+          }
